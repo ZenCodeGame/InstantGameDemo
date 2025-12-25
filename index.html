@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZK Instant Game SDK Test</title>
+    <style>
+        html {
+            width: 100%;
+            overflow-x: hidden;
+            /* 防止水平滚动 */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #f5f7fa;
+            padding-top: 400px;
+            /* 为固定的输出区域预留空间 */
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            html {
+                overflow-x: hidden;
+            }
+
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+                padding-top: 320px !important;
+                max-width: none !important;
+                width: 100% !important;
+                background-color: #f5f7fa;
+            }
+            
+            .section {
+                margin: 8px 8px !important;
+                padding: 12px !important;
+                border-radius: 6px;
+                box-sizing: border-box;
+            }
+            
+            input, select {
+                width: 100% !important;
+                max-width: none !important;
+                margin: 8px 0 !important;
+                font-size: 16px !important;
+                box-sizing: border-box;
+                padding: 12px;
+            }
+            
+            button {
+                font-size: 16px !important;
+                padding: 12px 20px !important;
+                margin: 8px 8px 8px 0 !important;
+                min-height: 44px;
+                width: auto;
+                box-sizing: border-box;
+            }
+            
+            .section h2 {
+                font-size: 18px !important;
+                margin: 0 0 10px 0 !important;
+            }
+            
+            .section h3 {
+                font-size: 16px !important;
+                margin: 10px 0 8px 0 !important;
+            }
+            
+            .section p {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+                margin: 8px 0 !important;
+            }
+            
+            h1 {
+                font-size: 18px !important;
+                margin: 8px 8px 16px 8px !important;
+                color: #2c3e50;
+                text-align: left;
+            }
+        }
+        
+        /* 平板端适配 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            body {
+                max-width: 900px;
+                padding: 0 15px;
+            }
+            
+            input, select {
+                width: 250px;
+            }
+            
+            #output {
+                width: calc(100% - 60px);
+                max-width: 860px;
+            }
+            
+            .output-header {
+                width: calc(100% - 60px);
+                max-width: 860px;
+            }
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            margin: 15px 0 10px 0;
+        }
+
+        .section p {
+            color: #7f8c8d;
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 16px;
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        input,
+        select {
+            margin: 5px;
+            padding: 8px 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 200px;
+            box-sizing: border-box;
+        }
+        
+        /* 确保在所有设备上的基本响应式 */
+        @media (max-width: 480px) {
+            input, select {
+                width: calc(100% - 10px) !important;
+                margin: 5px 0;
+            }
+        }
+
+        .params-info {
+            background: #ecf0f1;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            color: #7f8c8d;
+        }
+
+        #output {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 0 0 4px 4px;
+            margin: 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid #34495e;
+            border-top: none;
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 80px);
+            max-width: 1160px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 移动端输出区域适配 */
+        @media (max-width: 768px) {
+            #output {
+                left: 8px !important;
+                right: 8px !important;
+                width: auto !important;
+                transform: none !important;
+                padding: 10px !important;
+                font-size: 11px !important;
+                height: 200px !important;
+                top: 45px !important;
+                max-width: none !important;
+                box-sizing: border-box;
+            }
+        }
+
+        .output-header {
+            background: #34495e;
+            color: #ecf0f1;
+            padding: 8px 15px;
+            border-radius: 4px 4px 0 0;
+            margin: 0;
+            font-weight: bold;
+            font-size: 14px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 80px);
+            max-width: 1160px;
+            z-index: 1001;
+            border: 2px solid #34495e;
+            border-bottom: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 移动端标题栏适配 */
+        @media (max-width: 768px) {
+            .output-header {
+                left: 8px !important;
+                right: 8px !important;
+                width: auto !important;
+                transform: none !important;
+                padding: 8px 12px !important;
+                font-size: 13px !important;
+                top: 10px !important;
+                max-width: none !important;
+                box-sizing: border-box;
+            }
+        }
+
+        .clear-btn {
+            float: right;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .clear-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ZK Game SDK 完整接口测试页面</h1>
+
+    <div class="output-header">
+        📋 输出日志 (实时显示)
+        <button class="clear-btn" onclick="clearLog()">清空</button>
+    </div>
+    <div id="output"></div>
+
+    <div class="section">
+        <h2>📱 SDK 初始化</h2>
+        <p><strong>说明：</strong>初始化SDK，必须在使用其他功能前调用</p>
+        <button onclick="initSDK()">Initialize SDK</button>
+        <div class="params-info">
+            <small>配置参数: APP_ID='10040', SECRET_KEY='phc_Js87w93pRKVMN3AI4N1ITa8PaeNdeASpHg6fTaaWYzE'</small>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>👤 用户操作</h2>
+        <p><strong>说明：</strong>用户登录和分享功能，登录后可获取用户信息</p>
+        <button onclick="login()">Login 用户登录</button>
+        <button onclick="share()">Share 分享</button>
+        <button onclick="createShortcut()">Create Shortcut 创建快捷图标</button>
+    </div>
+
+    <div class="section">
+        <h2>💾 数据存储</h2>
+        <p><strong>说明：</strong>本地数据存储和读取，可用于保存游戏进度</p>
+        <input type="text" id="save_key" placeholder="存储Key">
+        <input type="text" id="save_value" placeholder="存储Value">
+        <button onclick="saveData()">Save Data 保存数据</button>
+        <br><br>
+        <input type="text" id="load_keys" placeholder="读取Keys (逗号分隔)">
+        <button onclick="loadData()">Load Data 读取数据</button>
+    </div>
+
+    <div class="section">
+        <h2>📺 广告功能</h2>
+        <p><strong>说明：</strong>支持三种广告类型：Banner横幅广告、激励视频广告、插屏广告</p>
+
+        <h3>Banner 横幅广告</h3>
+        <input type="text" id="banner_id" placeholder="Banner广告ID (如: 123456)">
+        <select id="banner_position">
+            <option value="top">Top 顶部</option>
+            <option value="bottom" selected>Bottom 底部</option>
+        </select>
+        <button onclick="showAd('banner')">Show Banner Ad 显示Banner</button>
+        <button onclick="hideBannerAd()">Hide Banner Ad 隐藏Banner</button>
+
+        <h3>激励视频广告</h3>
+        <input type="text" id="rewarded_id" placeholder="激励广告ID (如: 789012)">
+        <button onclick="showAd('rewarded')">Show Rewarded Ad 显示激励广告</button>
+        <button onclick="loadShowRewardedAd()">Load&Show Rewarded 加载并显示</button>
+
+        <h3>插屏广告</h3>
+        <input type="text" id="interstitial_id" placeholder="插屏广告ID (如: 345678)">
+        <button onclick="showAd('interstitial')">Show Interstitial Ad 显示插屏</button>
+        <button onclick="loadShowInterstitialAd()">Load&Show Interstitial 加载并显示</button>
+    </div>
+
+    <div class="section">
+        <h2>💰 支付功能</h2>
+        <p><strong>说明：</strong>应用内购买，支持多种货币，自动生成订单ID</p>
+        <input type="text" id="pd_price" placeholder="价格 (如: 9.99)">
+        <input type="text" id="pd_name" placeholder="商品名称 (如: 金币包)">
+        <input type="text" id="pd_des" placeholder="商品介绍 (如: 1000金币礼包)">
+        <select id="currency">
+            <option value="USD" selected>USD 美元</option>
+            <option value="EUR">EUR 欧元</option>
+            <option value="CNY">CNY 人民币</option>
+        </select>
+        <button onclick="doPay()">Purchase 发起支付</button>
+    </div>
+
+    <div class="section">
+        <h2>🎮 游戏管理</h2>
+        <p><strong>说明：</strong>游戏切换、生命周期管理和会话数据</p>
+        <input type="text" id="switch_app_id" placeholder="切换到的游戏ID">
+        <input type="text" id="switch_params" placeholder="切换参数 (JSON格式)">
+        <button onclick="switchGame()">Switch Game 切换游戏</button>
+        <br><br>
+        <input type="text" id="session_data" placeholder="会话数据 (JSON格式)">
+        <button onclick="setSessionData()">Set Session Data 设置会话数据</button>
+        <br><br>
+        <button onclick="setupPauseListener()">Setup Pause Listener 设置暂停监听</button>
+        <button onclick="quitGame()">Quit Game 退出游戏</button>
+    </div>
+
+    <div class="section">
+        <h2>📈 自定义事件追踪</h2>
+        <p><strong>说明：</strong>用于数据分析和用户行为追踪的自定义事件</p>
+        <input type="text" id="eventName" placeholder="事件名称 (如: level_complete)">
+        <input type="text" id="eventId" placeholder="事件ID (如: level_1)">
+        <input type="text" id="eventValue" placeholder="事件值 (如: 100)">
+        <input type="text" id="eventPayload" placeholder="事件数据 (JSON格式)">
+        <button onclick="trackEvent()">Track Event 追踪事件</button>
+    </div>
+
+    <div class="section">
+        <h2>🔧 SDK 信息</h2>
+        <p><strong>说明：</strong>显示当前SDK的运行状态和平台信息</p>
+        <button onclick="showSDKInfo()">Show SDK Info 显示SDK信息</button>
+        <button onclick="clearLog()">Clear Log 清空日志</button>
+    </div>
+
+    <template id="leaderboardTemplate">
+        <style>
+            .leaderboard-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 8px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .leaderboard-table th {
+                background-color: #f5f5f5;
+            }
+        </style>
+    </template>
+
+    <script src="./src/js/zkgame-sdk-v1.0.min.js"></script>
+    <script>
+        let gameSDK;
+
+        function log(message) {
+            const output = document.getElementById('output');
+            output.textContent = new Date().toISOString() + ': ' + message + '\n' + output.textContent;
+        }
+
+        async function initSDK() {
+            try {
+                const cfg = {
+                    APP_ID: '测试_10040',
+                    SECRET_KEY: '测试用密钥_phc_Js87w93pRKVMN3AI4N1ITa8PaeNdeASpHg6fTaaWYzE',
+                }
+                gameSDK = new window.GameSDK(cfg);
+                // gameSDK = window.zkgameSDK; //默认
+                await gameSDK.init();
+                log('SDK initialized successfully');
+            } catch (error) {
+                log('Error initializing SDK: ' + error.message);
+            }
+        }
+
+        async function login() {
+            try {
+                const result = await gameSDK.login();
+                log('Login success: ' + JSON.stringify(result));
+            } catch (error) {
+                log('Login error: ' + error.message);
+            }
+        }
+
+        async function share() {
+            try {
+                const shareImage = "";//图片的 Base64 数据;
+                await gameSDK.share({
+                    title: 'Test Share',
+                    image: shareImage,
+                    data: { test: 'data' }
+                });
+                log('Share success');
+            } catch (error) {
+                log('Share error: ' + error.message);
+            }
+        }
+
+        async function showAd(type) {
+            try {
+                if (type === "banner") {
+                    const banner_id = document.getElementById('banner_id').value;
+                    const position = document.getElementById('banner_position').value;
+                    await gameSDK.showBannerAd(banner_id, position);
+                } else if (type === "rewarded") {
+                    const rewarded_id = document.getElementById('rewarded_id').value;
+                    let rewardedVideoAd = await gameSDK.loadRewardedVideoAd(rewarded_id);
+                    //启动游戏的时候可以适当缓存一些rewardedVideoAd，便于及时的展示广告
+                    const result = await gameSDK.showRewardedVideoAd(rewardedVideoAd);
+                    log('Rewarded Ad Result: ' + JSON.stringify(result));
+                } else if (type === "interstitial") {
+                    const interstitial_id = document.getElementById('interstitial_id').value;
+                    let interstitialAd = await gameSDK.loadInterstitialAd(interstitial_id);
+                    const result = await gameSDK.showInterstitialAd(interstitialAd);
+                    log('Interstitial Ad Result: ' + JSON.stringify(result));
+                }
+                log('Ad shown successfully: ' + type);
+            } catch (error) {
+                log('Ad error: ' + error.message);
+            }
+        }
+
+        async function hideBannerAd() {
+            try {
+                await gameSDK.hideBannerAd();
+                log('Banner ad hidden');
+            } catch (error) {
+                log('Hide banner error: ' + error.message);
+            }
+        }
+
+        async function loadShowRewardedAd() {
+            try {
+                const rewarded_id = document.getElementById('rewarded_id').value;
+                const result = await gameSDK.loadShowRewardedVideoAd(rewarded_id);
+                log('Load&Show Rewarded Result: ' + JSON.stringify(result));
+            } catch (error) {
+                log('Load&Show rewarded error: ' + error.message);
+            }
+        }
+
+        async function loadShowInterstitialAd() {
+            try {
+                const interstitial_id = document.getElementById('interstitial_id').value;
+                const result = await gameSDK.loadShowInterstitialAd(interstitial_id);
+                log('Load&Show Interstitial Result: ' + JSON.stringify(result));
+            } catch (error) {
+                log('Load&Show interstitial error: ' + error.message);
+            }
+        }
+
+        async function doPay() {
+            try {
+                const price = document.getElementById('pd_price').value;
+                const name = document.getElementById('pd_name').value;
+                const des = document.getElementById('pd_des').value;
+                const currency = document.getElementById('currency').value;
+                const orderId = "20251222" + Math.floor(Date.now() / 1000);
+                const order = {
+                    orderId: orderId,
+                    amount: price,
+                    country: "US",
+                    currency: currency,
+                    prodName: name,
+                    description: des,
+                    extra: orderId + "_" + price + "_" + name,
+                    callbackUrl: "https://api.zencodegames.com/payment/callback"
+                }
+                const result = await gameSDK.toPay(order);
+                log('Purchase result: ' + JSON.stringify(result));
+            } catch (error) {
+                log('Purchase error: ' + error.message);
+            }
+        }
+
+        async function trackEvent() {
+            try {
+                const name = document.getElementById('eventName').value;
+                const eventId = document.getElementById('eventId').value || "";
+                const eventValue = document.getElementById('eventValue').value || "0";
+                const payload = JSON.parse(document.getElementById('eventPayload').value || '{}');
+                gameSDK.trackEvent(name, eventId, eventValue, payload);
+                log('Event tracked: ' + name + ' (ID: ' + eventId + ', Value: ' + eventValue + ')');
+            } catch (error) {
+                log('Track event error: ' + error.message);
+            }
+        }
+
+        // 数据存储功能
+        async function saveData() {
+            try {
+                const key = document.getElementById('save_key').value;
+                const value = document.getElementById('save_value').value;
+                const data = {};
+                data[key] = value;
+                await gameSDK.saveData(data);
+                log('Data saved: ' + key + ' = ' + value);
+            } catch (error) {
+                log('Save data error: ' + error.message);
+            }
+        }
+
+        async function loadData() {
+            try {
+                const keysStr = document.getElementById('load_keys').value;
+                const keys = keysStr.split(',').map(k => k.trim());
+                const data = await gameSDK.loadData(keys);
+                log('Data loaded: ' + JSON.stringify(data));
+            } catch (error) {
+                log('Load data error: ' + error.message);
+            }
+        }
+
+
+        // 游戏管理功能
+        async function switchGame() {
+            try {
+                const appId = document.getElementById('switch_app_id').value;
+                const paramsStr = document.getElementById('switch_params').value;
+                const params = paramsStr ? JSON.parse(paramsStr) : undefined;
+                const result = await gameSDK.switchGame(appId, params);
+                log('Switch game result: ' + JSON.stringify(result));
+            } catch (error) {
+                log('Switch game error: ' + error.message);
+            }
+        }
+
+        async function setSessionData() {
+            try {
+                const dataStr = document.getElementById('session_data').value;
+                const data = JSON.parse(dataStr);
+                await gameSDK.setSessionData(data);
+                log('Session data set: ' + dataStr);
+            } catch (error) {
+                log('Set session data error: ' + error.message);
+            }
+        }
+
+        async function createShortcut() {
+            try {
+                await gameSDK.createShortcut();
+                log('Shortcut created successfully');
+            } catch (error) {
+                log('Create shortcut error: ' + error.message);
+            }
+        }
+
+        function setupPauseListener() {
+            try {
+                gameSDK.onPause(() => {
+                    log('Game paused - 游戏已暂停');
+                });
+                log('Pause listener setup successfully');
+            } catch (error) {
+                log('Setup pause listener error: ' + error.message);
+            }
+        }
+
+        function quitGame() {
+            try {
+                gameSDK.quitGame();
+                log('Game quit requested');
+            } catch (error) {
+                log('Quit game error: ' + error.message);
+            }
+        }
+
+        // SDK信息
+        function showSDKInfo() {
+            try {
+                const info = {
+                    platform: gameSDK.platformName,
+                    config: gameSDK.config,
+                    timestamp: new Date().toISOString()
+                };
+                log('SDK Info: ' + JSON.stringify(info, null, 2));
+            } catch (error) {
+                log('Show SDK info error: ' + error.message);
+            }
+        }
+        function clearLog() {
+            document.getElementById('output').textContent = '';
+        }
+    </script>
+</body>
+
+</html>
