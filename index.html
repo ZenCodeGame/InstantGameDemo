@@ -396,7 +396,7 @@
         </style>
     </template>
 
-    <script src="./src/js/zkgame-sdk-v1.0.min.js"></script>
+    <script src="./src/js/zkgame-sdk.min.js"></script>
     <script>
         let gameSDK;
 
@@ -408,8 +408,12 @@
         async function initSDK() {
             try {
                 const cfg = {
-                    APP_ID: '测试_10040',
-                    SECRET_KEY: '测试用密钥_phc_Js87w93pRKVMN3AI4N1ITa8PaeNdeASpHg6fTaaWYzE',
+                    APP_ID: '10038',
+                    SECRET_KEY: 'phc_Js87w93pRKVMN3AI4N1ITa8PaeNdeASpHg6fTaaWYzE',
+                    PLATFORM: 'huawei',
+                    HuaweiAppId: '116519555',
+                    TEST_MODE: true,
+                    HuaweiSecretKey: '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',
                 }
                 gameSDK = new window.GameSDK(cfg);
                 // gameSDK = window.zkgameSDK; //默认
