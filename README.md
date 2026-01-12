@@ -188,7 +188,23 @@ await gameSDK.share({
 - `image`: 分享图片:base64 or encoded image
 - `data`: 附加数据，会传递给接收分享的用户
 
-### 3. 创建快捷图标
+### 3. 邀请功能
+
+```javascript
+await gameSDK.inviteAsync({
+  title: "游戏分享标题",
+  image: "",
+  data: { level: 5, score: 1000 },
+});
+```
+
+**参数说明：**
+
+- `title`: 邀请标题
+- `image`: 邀请图片:base64 or encoded image
+- `data`: 附加数据，会传递给接收邀请的用户
+
+### 4. 创建快捷图标
 
 ```javascript
 await gameSDK.createShortcut();
@@ -198,6 +214,17 @@ await gameSDK.createShortcut();
 
 - 仅在支持的平台上生效
 - 可以在用户桌面创建游戏快捷方式
+
+
+### 5. 获取游戏启动参数
+```javascript
+const params = await gameSDK.getEntryPointData();
+```
+
+**说明：**
+
+-- 获取包括分享、邀请、广告跳转等相关的参数
+
 
 ## 数据存储
 
