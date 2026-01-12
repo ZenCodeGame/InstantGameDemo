@@ -287,7 +287,7 @@
     <h1>ZK Game SDK 完整接口测试页面</h1>
 
     <div class="avatar-wrapper">
-        <img class="avatar" src="http://astroby-lucky.oss-accelerate.aliyuncs.com/images/favicon.jpeg?Expires=1768185637&OSSAccessKeyId=TMP.3Kt7WP8yuSBSFEW1Gc4Mn2ehMjoqfePD9gTRshSq4obnuTpeEFP3u4g4rvXcyD3XMYvcs6XGLWPEAnK21hYdTbtS4Jqxqm&Signature=C6SYLOpJfJ2Ch7Vyf4jTHD8ILNE%3D" alt="头像">
+        <img class="avatar" src="http://astroby-lucky.oss-accelerate.aliyuncs.com/images/favicon.jpeg" alt="头像">
     </div>
     <div class="output-header">
         📋 输出日志 (实时显示)
@@ -415,6 +415,8 @@
     </template>
 
     <script src="./src/js/zkgame-sdk-v1.0.min.js"></script>
+    <script src="https://connect.facebook.net/en_US/fbinstant.8.0.js"></script>
+
     <script>
         let gameSDK;
 
@@ -426,7 +428,7 @@
         async function initSDK() {
             try {
                 const cfg = {
-                    APP_ID: '10038',
+                    APP_ID: '10040',
                     SECRET_KEY: 'phc_Js87w93pRKVMN3AI4N1ITa8PaeNdeASpHg6fTaaWYzE',
                     PLATFORM: 'facebook',
                     TEST_MODE: true,
