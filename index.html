@@ -454,7 +454,7 @@
 
         async function share() {
             try {
-                const shareImage = "";//图片的 Base64 数据;
+                const shareImage = "";//支持图片的 Base64 数据和图片 URL;
                 await gameSDK.share({
                     title: 'Test Share',
                     image: shareImage,
@@ -469,7 +469,7 @@
         //邀请好友
         async function inviteFriend() {
             try {
-                const shareImage = "";//图片的 Base64 数据;
+                const shareImage = "";//支持图片的 Base64 数据和图片 URL;
                 await gameSDK.inviteAsync({
                     title: 'Invite Friend',
                     image: shareImage,
