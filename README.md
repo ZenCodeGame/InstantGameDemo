@@ -343,13 +343,20 @@ const order = {
 const result = await gameSDK.toPay(order);
 ```
 
-**返回值：**
+**返回值：result信息如下**
 
 ```javascript
 {
-    success: true,              // 支付是否成功
-    message: 'Pay success'      // 结果信息
+    success: true,              // 支付是否成功 true表示成功 false表示失败
+    message: 'Pay success'      // 结果信息 如果失败需要处理提示用户支付订单创建失败
 }
+//success：fasle的情况下，message的消息如下：
+1. "CreateOrder failed: Payments not ready!" //支付方式暂不支持
+2. "Network error!" //网络异常
+3. "Pay fail" //支付失败
+4. "Pay fail:Network error!" //网络异常
+5. "Purchase consume fail" //支付确认失败
+6. "Purchase check fail" //支付检查失败
 ```
 
 ### 💰 服务端回调接口
