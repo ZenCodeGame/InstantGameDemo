@@ -291,7 +291,7 @@ const result = await gameSDK.showRewardedVideoAd(rewardedAd);
 const result = await gameSDK.loadShowRewardedVideoAd("rewarded_ad_id");
 ```
 
-**返回值：**
+**result返回值说明：**
 
 ```javascript
 //加载展示成功
