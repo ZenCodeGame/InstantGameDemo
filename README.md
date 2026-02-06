@@ -284,6 +284,7 @@ await gameSDK.hideBannerAd();
 ```javascript
 // 方法1：分步加载和显示
 const rewardedAd = await gameSDK.loadRewardedVideoAd("rewarded_ad_id");
+// 如果rewardedAd为空 则不展示广告，并提示用户暂无广告
 const result = await gameSDK.showRewardedVideoAd(rewardedAd);
 
 // 方法2：一步加载并显示
@@ -294,7 +295,7 @@ const result = await gameSDK.loadShowRewardedVideoAd("rewarded_ad_id");
 
 ```javascript
 {
-    success: true,      // 是否成功显示
+    success: true,      // true是成功显示 false表示展示失败
     rewarded: true      // 用户是否获得奖励
 }
 ```
@@ -304,17 +305,19 @@ const result = await gameSDK.loadShowRewardedVideoAd("rewarded_ad_id");
 ```javascript
 // 方法1：分步加载和显示
 const interstitialAd = await gameSDK.loadInterstitialAd("interstitial_ad_id");
+// 如果interstitialAd为空 则不展示广告，并提示用户暂无广告
 const result = await gameSDK.showInterstitialAd(interstitialAd);
 
 // 方法2：一步加载并显示
 const result = await gameSDK.loadShowInterstitialAd("interstitial_ad_id");
+// 
 ```
 
 **返回值：**
 
 ```javascript
 {
-  success: true; // 是否成功显示
+  success: true; // true表示成功显示 false表示展示失败
 }
 ```
 
@@ -353,7 +356,7 @@ const result = await gameSDK.toPay(order);
 //success：fasle的情况下，message的消息如下：
 1. "CreateOrder failed: Payments not ready!" //支付方式暂不支持
 2. "Network error!" //网络异常
-3. "Pay fail" //支付失败
+3. "Pay fail" //支付失败/取消支付
 4. "Pay fail:Network error!" //网络异常
 5. "Purchase consume fail" //支付确认失败
 6. "Purchase check fail" //支付检查失败
