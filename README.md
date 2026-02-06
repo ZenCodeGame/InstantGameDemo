@@ -294,10 +294,48 @@ const result = await gameSDK.loadShowRewardedVideoAd("rewarded_ad_id");
 **返回值：**
 
 ```javascript
+//加载展示成功
 {
     success: true,      // true是成功显示 false表示展示失败
     rewarded: true      // 用户是否获得奖励
 }
+// 加载或展示失败示例
+{
+  success: false,      // true=成功展示，false=展示失败
+  rewarded: false,     // 用户是否获得奖励（激励视频需完整观看才为 true）
+  error: "错误信息",   // 调试/日志用的文本，建议上报到后台，用户提示使用友好文案
+  errorCode: "错误码"   // 详见下方错误码说明
+}
+
+错误码说明：
+- **ADS_NOT_LOADED**：广告未加载或当前没有可用的广告。处理：可在后台记录并尝试重新加载（`loadRewardedVideoAd`），前端提示“暂无广告，稍后再试”。
+- **INVALID_PARAM**：调用参数非法（例如广告位 ID 错误或传入参数格式不对）。处理：检查调用参数并在开发/测试环境中记录详细错误，上线时友好提示用户。
+- **NETWORK_FAILURE**：网络请求失败（超时、断网等）。处理：实现重试机制（指数退避），提示用户网络异常或离线。建议上报网络类型与失败详情便于诊断。
+- **INVALID_OPERATION**：当前操作无效（例如在已展示广告时再次请求展示）。处理：避免重复调用；在状态允许时重试展示。
+- **RATE_LIMITED**：请求频率过高被限流。处理：降低请求频率，加入重试间隔，并统计限流触达频次以调整策略。
+- **USER_INPUT**：用户主动中断或取消（例如关闭视频）。处理：不发放奖励，记录事件用于分析用户流失点，可向用户展示取消确认或激励引导。
+
+示例处理（伪代码）：
+  const res = await gameSDK.loadShowRewardedVideoAd("rewarded_ad_id");
+  if (res.success && res.rewarded) {
+    // 发放奖励
+  } else if (!res.success) {
+    // 根据 errorCode 做细化处理或通用提示
+    switch (res.errorCode) {
+      case 'ADS_NOT_LOADED':
+      case 'NETWORK_FAILURE':
+        // 尝试重新加载或提示用户稍后再试
+        break;
+      case 'INVALID_PARAM':
+        // 检查调用参数
+        break;
+      case 'USER_INPUT':
+        // 用户取消，不发放奖励
+        break;
+      default:
+        // 上报并展示友好错误提示
+    }
+  }
 ```
 
 ### 3. 插屏广告
@@ -307,7 +345,6 @@ const result = await gameSDK.loadShowRewardedVideoAd("rewarded_ad_id");
 const interstitialAd = await gameSDK.loadInterstitialAd("interstitial_ad_id");
 // 如果interstitialAd为空 则不展示广告，并提示用户暂无广告
 const result = await gameSDK.showInterstitialAd(interstitialAd);
-
 // 方法2：一步加载并显示
 const result = await gameSDK.loadShowInterstitialAd("interstitial_ad_id");
 // 
