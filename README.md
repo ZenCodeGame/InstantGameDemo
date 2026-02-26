@@ -76,7 +76,7 @@ ZKGame Instant Game SDK 是一个通用的 Instant Game 游戏 SDK，支持 Face
 **官方下载地址：**
 
 ```
-https://docs.zencodegame.com/js/zkgame-sdk-v1.0.min.js
+https://docs.zencodegame.com/js/zkgame-sdk-v1.1.min.js
 ```
 
 ### 🔗 多种引入方式
@@ -85,7 +85,7 @@ https://docs.zencodegame.com/js/zkgame-sdk-v1.0.min.js
 
 ```bash
 # 下载SDK文件到项目目录
-curl -O https://docs.zencodegame.com/js/zkgame-sdk-v1.0.min.js
+curl -O https://docs.zencodegame.com/js/zkgame-sdk-v1.1.min.js
 
 # facebook instant game还需要引入：
 curl -O https://connect.facebook.net/en_US/fbinstant.8.0.js
@@ -93,7 +93,7 @@ curl -O https://connect.facebook.net/en_US/fbinstant.8.0.js
 
 
 # 或使用wget
-wget https://docs.zencodegame.com/js/zkgame-sdk-v1.0.min.js
+wget https://docs.zencodegame.com/js/zkgame-sdk-v1.1.min.js
 # facebook instant game还需要引入：
 wget https://connect.facebook.net/en_US/fbinstant.8.0.js
 ```
@@ -101,7 +101,7 @@ wget https://connect.facebook.net/en_US/fbinstant.8.0.js
 #### 方式 2：CDN 直接引用
 
 ```html
-<script src="https://docs.zencodegame.com/js/zkgame-sdk-v1.0.min.js"></script>
+<script src="https://docs.zencodegame.com/js/zkgame-sdk-v1.1.min.js"></script>
 //facebook instant game还需要引入：
 <script src="https://connect.facebook.net/en_US/fbinstant.8.0.js"></script>
 ```
@@ -120,7 +120,7 @@ wget https://connect.facebook.net/en_US/fbinstant.8.0.js
     <!-- 游戏内容 -->
 
     <!-- 在页面底部引入SDK -->
-    <script src="./js/zkgame-sdk-v1.0.min.js"></script>
+    <script src="./js/zkgame-sdk-v1.1.min.js"></script>
     <!--facebook instant game还需要引入-->
     <script src="https://connect.facebook.net/en_US/fbinstant.8.0.js"></script>
     <script>
