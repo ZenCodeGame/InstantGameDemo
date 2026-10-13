@@ -357,7 +357,7 @@
         </style>
     </template>
 
-    <script src="./src/js/zkgame-sdk-v1.6.min.js"></script>
+    <script src="./src/js/zkgame-sdk-v1.7.min.js"></script>
     <!-- <script src="https://connect.facebook.net/en_US/fbinstant.8.0.js"></script> -->
 
     <script>
@@ -367,10 +367,10 @@
             console.log(message);
         }
 
-        // window.onload = function() {
-        //     log('Page loaded, initializing SDK...');
-        //     initSDK();
-        // }
+        window.onload = function() {
+            log('Page loaded, initializing SDK...');
+            initSDK();
+        }
 
         async function initSDK() {
             try {
